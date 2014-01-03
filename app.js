@@ -15,15 +15,19 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 
 (function() {
-  var RedisSessions, app, env, express, rs;
+  var RedisSessions, app, env, express, redis, rs, url;
 
   RedisSessions = require("redis-sessions");
 
   env = require("./env");
 
-  console.log("ENV", env);
+  url = require('url');
 
-  rs = new RedisSessions();
+  redis = url.parse(env.redis_url);
+
+  console.log("ENV", env, redis);
+
+  rs = new RedisSessions(redis);
 
   express = require('express');
 
