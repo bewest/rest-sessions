@@ -119,12 +119,6 @@ app.delete '/:app/killall', (req, res) ->
 		res.send(resp)
 		return
 
-
-
-
 	return
-
-
-
 
 module.exports = app
