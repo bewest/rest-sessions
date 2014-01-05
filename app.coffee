@@ -17,8 +17,9 @@ RedisSessions = require "redis-sessions"
 env = require "./env"
 url = require('url')
 redis = url.parse(env.redis_url)
-console.log("ENV", env, redis)
-rs = new RedisSessions(redis)
+config = {port: redis.port, host: redis.hostname}
+console.log("ENV", env, redis, config)
+rs = new RedisSessions(config)
 
 express = require 'express'
 app = express()

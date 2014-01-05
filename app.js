@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 
 (function() {
-  var RedisSessions, app, env, express, redis, rs, url;
+  var RedisSessions, app, config, env, express, redis, rs, url;
 
   RedisSessions = require("redis-sessions");
 
@@ -25,9 +25,14 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
   redis = url.parse(env.redis_url);
 
-  console.log("ENV", env, redis);
+  config = {
+    port: redis.port,
+    host: redis.hostname
+  };
 
-  rs = new RedisSessions(redis);
+  console.log("ENV", env, redis, config);
+
+  rs = new RedisSessions(config);
 
   express = require('express');
 
