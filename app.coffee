@@ -14,7 +14,12 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 
 RedisSessions = require "redis-sessions"
-rs = new RedisSessions()
+env = require "./env"
+url = require('url')
+redis = url.parse(env.redis_url)
+config = {port: redis.port, host: redis.hostname}
+console.log("ENV", env, redis, config)
+rs = new RedisSessions(config)
 
 express = require 'express'
 app = express()
@@ -71,6 +76,15 @@ app.post '/:app/set/:token', (req, res) ->
 		return
 	return
 
+app.get '/:app/soapp', (req, res) ->
+	rs.soapp {app: req.params.app, dt: req.param("dt")}, (err, resp) ->
+		if err
+			res.send(err, 500)
+			return
+		res.send(resp)
+		return
+	return
+
 app.get '/:app/soid/:id', (req, res) ->
 	rs.soid {app: req.params.app, id: req.params.id}, (err, resp) ->
 		if err
@@ -106,12 +120,6 @@ app.delete '/:app/killall', (req, res) ->
 		res.send(resp)
 		return
 
-
-
-
 	return
-
-
-
 
 module.exports = app
